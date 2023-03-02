@@ -1,4 +1,4 @@
-# DARPA-Pneumothorax
+# POCUS-Pneumothorax-TSM-Classification
 
 ## Environment Setup
 
