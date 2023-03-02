@@ -1,0 +1,351 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: main",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/pneumothorax_exp2.yaml",
+                "LOGGER.WANDB", "disabled",
+                "MODEL.ST_CONCENSUS", "AttentionPooling",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                "DATA.IMAGE_RESIZE", "[416, 416]", //"(352, 416)",
+            ]
+        },
+        {
+            "name": "Python: main seg",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/pneumothorax_seg_exp8.yaml",
+                "LOGGER.WANDB", "disabled",
+                "MODEL.ST_CONCENSUS", "AttentionPooling",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "EXPERIMENT.DATASET", "DARPA-Seg-Dataset",
+                "EXPERIMENT.MODEL", "tsm_seg",
+                "DATA.SEG_LABEL", "crop_seg_lb_rct",
+                "SOLVER.LOSS_FUNC", "cross_entropy+seg_cross_entropy",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+            ]
+        },
+        {
+            "name": "Python: main unet seg",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/pneumothorax_seg_exp8.yaml",
+                "LOGGER.WANDB", "disabled",
+                "MODEL.ST_CONCENSUS", "SegAttentionPooling", //"AttentionPooling",
+                "MODEL.PRETRAIN_FREEZE", "/home/grg/Research/DARPA-Pneumothorax/results/Pneumothorax_Exps/unetSm_DARPA-Seg-Dataset_Frame_Seg_4cls_T1_A/Pneumothorax_Exps_Pneumothorax_Exps/15xoddmy_0/checkpoints/epoch=1-step=969.ckpt",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "EXPERIMENT.DATASET", "DARPA-Seg-Dataset",
+                "EXPERIMENT.MODEL", "tsm_unet_seg", //"tsm_seg",
+                "DATA.SEG_LABEL", "crop_seg_lb_rct",
+                "DATA.SEG_IMAGE_RESIZE", "(56, 56)",
+                "SOLVER.OPTIMIZER", "adam+freeze",
+                "SOLVER.LOSS_FUNC", "cross_entropy", //"cross_entropy+seg_cross_entropy",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                "CAM.ENABLE", "False",
+
+                "DATA.RANDOM_SPLIT_TRIAL", "R2",
+
+                // "DATA.NO_MULTI_CLIP", "3",
+                // "EXPERIMENT.MODE", "TestBest",
+
+                "CAM.VAL_FREQ", "1",
+            ]
+        },
+        {
+            "name": "Python: main frame seg",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/pneumothorax_frame_seg_exp1.yaml",
+                "LOGGER.WANDB", "disabled",
+                "MODEL.ST_CONCENSUS", "AttentionPooling",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "EXPERIMENT.DATASET", "DARPA-Seg-Dataset",
+                "EXPERIMENT.MODEL", "unetSm", //"unet",
+                "DATA.SEG_LABEL", "crop_seg_lb_rct",
+                "DATA.SEG_IMAGE_RESIZE", "(56, 56)",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                "MODEL.PRETRAIN", "/home/grg/Research/LungUS-AI/results/ISBI/Exp1_UNet_Dense_A/best_model.pth",
+
+            ]
+        },
+        {
+            "name": "Python: main biomarker",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/miccai22_biomarker_exp4.yaml", //"code/configs/biomarker_exp1.yaml",
+                // "--cfg", "code/configs/biomarker_exp1_baseline.yaml",
+                "LOGGER.WANDB", "disabled",
+                // "EXPERIMENT.MODE", "Test-generatePreds", //"Test",
+                "MODEL.ST_CONCENSUS", "AttentionPooling",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                // "DATA.IMAGE_RESIZE", "[416, 416]", //"(352, 416)",
+                // "MODEL.BACKBONE", "resnet34",
+
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Variation_Test_End2end_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/69v0gcr0_0/checkpoints/epoch=7-step=495-val_acc=0.5775.ckpt",
+                // "EXPERIMENT.MODE", "Test", 
+
+                "SOLVER.EPOCHS", "5",
+                "CAM.ENABLE", "False", //"True", //"False",
+                //
+            ]
+        },
+        {
+            "name": "Python: main biomarker end2endSF",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/miccai22_biomarker_exp4_end2endSF.yaml", //"code/configs/biomarker_exp4_end2end.yaml",
+                // "--cfg", "code/configs/biomarker_exp1_baseline.yaml",
+                "LOGGER.WANDB", "disabled",
+                // "EXPERIMENT.MODE", "Test-generatePreds", //"Test",
+                "MODEL.ST_CONCENSUS", "AttentionPooling",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                // "DATA.IMAGE_RESIZE", "[416, 416]", //"(352, 416)",
+                // "MODEL.BACKBONE", "resnet34",
+                
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/checkpoints/epoch=0-step=61-val_acc=0.1934.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/checkpoints/epoch=1-step=123-val_acc=0.2813.ckpt",
+                // "MODEL.CHECK_POINT", "/data1/exp_results/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/epoch=4-step=309-val_acc=0.3982.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Variation_Test_End2end_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/69v0gcr0_0/checkpoints/epoch=7-step=495-val_acc=0.5775.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Variation_Test_End2end_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/69v0gcr0_0/checkpoints/last.ckpt",
+                // "EXPERIMENT.MODE", "Test", 
+                
+
+                // "DATA.RANDOM_SPLIT_TRIAL", "R3", //"R2",
+                // "DATA.TEST_SPLIT", "0.3",
+                
+                "SOLVER.EPOCHS", "5",
+                "CAM.ENABLE", "False", //"True", //"False",
+                // "CAM.VAL_FREQ", "1",
+
+            ]
+        },
+        {
+            "name": "Python: main biomarker end2endDia",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/miccai22_biomarker_exp4_end2endDia.yaml", //"code/configs/biomarker_exp4_end2end.yaml",
+                // "--cfg", "code/configs/biomarker_exp1_baseline.yaml",
+                "LOGGER.WANDB", "disabled",
+                // "EXPERIMENT.MODE", "Test-generatePreds", //"Test",
+                "MODEL.ST_CONCENSUS", "AttentionPooling",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                // "DATA.IMAGE_RESIZE", "[416, 416]", //"(352, 416)",
+                // "MODEL.BACKBONE", "resnet34",
+                
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/checkpoints/epoch=0-step=61-val_acc=0.1934.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/checkpoints/epoch=1-step=123-val_acc=0.2813.ckpt",
+                // "MODEL.CHECK_POINT", "/data1/exp_results/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/epoch=4-step=309-val_acc=0.3982.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Variation_Test_End2end_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/69v0gcr0_0/checkpoints/epoch=7-step=495-val_acc=0.5775.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Variation_Test_End2end_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/69v0gcr0_0/checkpoints/last.ckpt",
+                // "EXPERIMENT.MODE", "Test", 
+                
+
+                // "DATA.RANDOM_SPLIT_TRIAL", "R3", //"R2",
+                // "DATA.TEST_SPLIT", "0.3",
+                
+                "SOLVER.EPOCHS", "5",
+                "CAM.ENABLE", "False", //"True", //"False",
+                // "CAM.VAL_FREQ", "1",
+
+            ]
+        },
+        {
+            "name": "Python: main biomarker end2end",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/miccai22_biomarker_exp4_end2end.yaml", //"code/configs/biomarker_exp4_end2end.yaml",
+                // "--cfg", "code/configs/biomarker_exp1_baseline.yaml",
+                "LOGGER.WANDB", "disabled",
+                // "EXPERIMENT.MODE", "Test-generatePreds", //"Test",
+                "MODEL.ST_CONCENSUS", "SavgDropTmaxCls", //"AttentionPooling",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                // "DATA.IMAGE_RESIZE", "[416, 416]", //"(352, 416)",
+                // "MODEL.BACKBONE", "resnet34",
+                
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/checkpoints/epoch=0-step=61-val_acc=0.1934.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/checkpoints/epoch=1-step=123-val_acc=0.2813.ckpt",
+                // "MODEL.CHECK_POINT", "/data1/exp_results/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/epoch=4-step=309-val_acc=0.3982.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Variation_Test_End2end_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/69v0gcr0_0/checkpoints/epoch=7-step=495-val_acc=0.5775.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Variation_Test_End2end_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/69v0gcr0_0/checkpoints/last.ckpt",
+                // "EXPERIMENT.MODE", "Test", 
+                
+                "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/MICCAI22_Biomarker_Exps/tsm_LSU-Large-Dataset_Test_T1_A/checkpoints/best.ckpt",
+                "EXPERIMENT.MODE", "Test-generatePreds", //"Test",
+                "MODEL.SAVE_FEATURES", "True",
+
+                // "DATA.TEST_FOLDS", "['E']", //pocovid
+                // "DATA.NO_MULTI_CLIP", "2",
+                // "VIDEO_DATA.TYPE", "crop",
+                
+                // "DATA.RANDOM_SPLIT_TRIAL", "R3", //"R2",
+                // "DATA.TEST_SPLIT", "0.3",
+                
+                "SOLVER.EPOCHS", "5",
+                "CAM.ENABLE", "False", //"True", //"False",
+                // "CAM.VAL_FREQ", "1",
+
+            ]
+        },
+        {
+            "name": "Python: main biomarker end2end I3D",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/miccai22_biomarker_exp4_end2end.yaml", //"code/configs/biomarker_exp4_end2end.yaml",
+                // "--cfg", "code/configs/biomarker_exp1_baseline.yaml",
+                "LOGGER.WANDB", "disabled",
+                "EXPERIMENT.MODEL", "i3d",
+                // "EXPERIMENT.MODE", "Test-generatePreds", //"Test",
+                "MODEL.ST_CONCENSUS", "AttentionPooling",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                // "DATA.IMAGE_RESIZE", "[416, 416]", //"(352, 416)",
+                // "MODEL.BACKBONE", "resnet34",
+                
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/checkpoints/epoch=0-step=61-val_acc=0.1934.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/checkpoints/epoch=1-step=123-val_acc=0.2813.ckpt",
+                // "MODEL.CHECK_POINT", "/data1/exp_results/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Test_T1_A/epoch=4-step=309-val_acc=0.3982.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Variation_Test_End2end_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/69v0gcr0_0/checkpoints/epoch=7-step=495-val_acc=0.5775.ckpt",
+                // "MODEL.CHECK_POINT", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_Variation_Test_End2end_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/69v0gcr0_0/checkpoints/last.ckpt",
+                // "EXPERIMENT.MODE", "Test", 
+                
+
+                // "DATA.RANDOM_SPLIT_TRIAL", "R3", //"R2",
+                // "DATA.TEST_SPLIT", "0.3",
+                
+                "SOLVER.EPOCHS", "5",
+                "CAM.ENABLE", "False", //"True", //"False",
+                // "CAM.VAL_FREQ", "1",
+
+            ]
+        },
+        {
+            "name": "Python: main biomarker multitask",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/miccai22_biomarker_exp4_multitask.yaml", //"code/configs/biomarker_exp4_multitask.yaml",
+                // "--cfg", "code/configs/biomarker_exp1_baseline.yaml",
+                "LOGGER.WANDB", "disabled",
+                // "EXPERIMENT.MODE", "Test-generatePreds", //"Test",
+                "MODEL.ST_CONCENSUS", "AttentionPooling",
+                // "MODEL.MULTI_TASK", "True",
+                "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                // "DATA.IMAGE_RESIZE", "[416, 416]", //"(352, 416)",
+                // "MODEL.BACKBONE", "resnet34",
+
+                "SOLVER.EPOCHS", "5",
+                "CAM.ENABLE", "False", //"True", //"False",
+                //
+            ]
+        },
+        {
+            "name": "Python: main biomarker seq",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/miccai22_biomarker_exp4_seq_train.yaml", //"code/configs/biomarker_exp4_seq_train.yaml",
+                // "--cfg", "code/configs/biomarker_exp1_baseline.yaml",
+                "LOGGER.WANDB", "disabled",
+                // "EXPERIMENT.MODE", "Test-generatePreds", //"Test",
+                "MODEL.ST_CONCENSUS", "AttentionPooling",
+                "MODEL.SEQ_TRAIN", "True",
+                "MODEL.NUM_SEQ_CLASS", "25",
+                // "SOLVER.SCHEDULER", "cosine",
+                "EXPERIMENT.DEBUG", "True",
+                // "VIDEO_DATA.TEMP_SAMPLING_METHOD", "rand_temp_sampling",
+                // "DATA.IMAGE_RESIZE", "[416, 416]", //"(352, 416)",
+                // "MODEL.BACKBONE", "resnet34",
+                
+                // "MODEL.PRETRAIN_SUB", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps/tsm_LSU-Dataset_BioM_AP_EquiTS_PlMl_T2_A/Biomarker_Exps_Biomarker_Exps/38n9gpuc_0/checkpoints/epoch=21-step=1649.ckpt",
+                "MODEL.PRETRAIN_SUB", "/home/grg/Research/DARPA-Pneumothorax/results/Biomarker_Exps_R3/tsm_LSU-Dataset_MultiTask_AP_EquiTS_PlMl_T1_A/checkpoints/best.ckpt",
+                "MODEL.PRETRAIN_FREEZE", "True", //"False", //"True",
+
+                "SOLVER.EPOCHS", "5",
+                "CAM.ENABLE", "False", //"True", //"False",
+                // "CAM.VAL_FREQ", "1",
+            ]
+        },
+        {
+            "name": "Python: main train",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "code/main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--cfg", "code/configs/pneumothorax_exp2.yaml",
+                // "LOGGER.WANDB", "disabled",
+            ]
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ]
+}
